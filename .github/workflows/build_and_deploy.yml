@@ -11,23 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       DOCKER_IMAGE_NAME: "aljabernishad/basic-api"
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Login to Docker Hub
-        run: echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-
-      - name: Build Docker Image
-        run: docker build -t $DOCKER_IMAGE_NAME .
-
-      - name: Run the Docker Image
-        run: docker run -d -p 8000:8000 $DOCKER_IMAGE_NAME
-
-      - name: Push Docker Image to Docker Hub
-        run: docker push $DOCKER_IMAGE_NAME
+      - name: Send mail
+        if: always()
+        uses: dawidd6/action-send-mail@v2
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          # user credentials
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          # email subject
+          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+          # email body as text
+          body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+          to: mailnishad02@gmail.com
+          from: Al Jaber Nishad
         
