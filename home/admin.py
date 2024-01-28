@@ -1,3 +1,5 @@
-from django.contrib import admin
+"""
+Admim module for the home app.
+"""
 
 # Register your models here.
