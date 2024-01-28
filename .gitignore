@@ -1,0 +1,13 @@
+.idea
+env
+media
+
+migrations
+*.pyc
+__pycache__/
+
+.vscode
+staticfiles/
+static/
+data/
+.env
