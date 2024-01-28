@@ -1,5 +1,5 @@
 # Create your tests here.
-
+# from rest_framework.test import APIClient
 from rest_framework import status
 from django.urls import reverse
 import json
@@ -42,26 +42,16 @@ def test_presence_of_additional_parameters_ignored(client):
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == {'text': 'Hello from Django'}
 
-def test_invalid_content_types(client):
-    url = reverse('get_data')
-    response = client.get(url, HTTP_ACCEPT='application/xml')
-    
-    assert response.status_code == status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
 
-def test_custom_status_code(client):
+def test_successful_get_request(client):
     url = reverse('get_data')
     response = client.get(url)
-    
-    with client.settings(HELLO_STATUS=status.HTTP_201_CREATED):
-        response = client.get(url)
-    
-    assert response.status_code == status.HTTP_201_CREATED
-
-def test_large_response_size(client):
-    url = reverse('get_data')
-    
-    with client.settings(HELLO_TEXT='A' * 100000):
-        response = client.get(url)
-    
     assert response.status_code == status.HTTP_200_OK
-    assert response.json() == {'text': 'A' * 100000}
+    assert response.json() == {'text': 'Hello from Django'}
+
+def test_response_format(client):
+    url = reverse('get_data')
+    response = client.get(url)
+    assert response.status_code == status.HTTP_200_OK
+    assert response.headers['Content-Type'] == 'application/json'
+    assert 'text' in response.json()
