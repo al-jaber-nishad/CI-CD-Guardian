@@ -9,6 +9,8 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
+from home.serializers import UserSerializer
+
 # Create your views here.
 
 @api_view(['POST'])
@@ -62,14 +64,12 @@ def user_login(request):
 
 
 @api_view(['GET'])
-def get_data(request):
+def show_all_users(request):
     """
-	Code for the get data view
+    View to retrieve and display all user data.
     """
-    text = "Hello from Django"
+    # Retrieve all user data
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
 
-    response = {
-		'text': text
-	}
-
-    return Response(response, status=status.HTTP_200_OK)
+    return Response({'users': serializer.data}, status=status.HTTP_200_OK)
