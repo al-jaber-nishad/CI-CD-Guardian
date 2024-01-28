@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
@@ -64,6 +64,7 @@ def user_login(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def show_all_users(request):
     """
     View to retrieve and display all user data.
