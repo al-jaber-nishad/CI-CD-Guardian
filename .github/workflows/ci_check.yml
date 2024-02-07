@@ -80,5 +80,5 @@ jobs:
         to: mailnishad02@gmail.com
         from: Al Jaber Nishad
         body: | 
-        ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}.
-        Error: ${{ steps.read_errors.outputs.error_summary }}        
+          ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}.
+          Error: ${{ steps.read_errors.outputs.error_summary }}        
