@@ -52,3 +52,38 @@ jobs:
       - name: Lint with pylint
         run: |
           pylint *.py
+
+  send_email_on_failure:
+    name: Send email on failure
+    needs: [unit_testing, linting]
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+
+    steps:
+    - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Read linting errors
+        id: read_errors
+        if: failure()
+        run: |
+          echo "Errors from pylint:" >> error_summary.txt
+          cat lint_errors.txt >> error_summary.txt
+
+      - name: Send email on failure
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+
+          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+          to: mailnishad02@gmail.com
+          from: Al Jaber Nishad
+          body: | 
+          ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}.
+          Error: ${{ steps.read_errors.outputs.error_summary }}        
