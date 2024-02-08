@@ -26,7 +26,7 @@ jobs:
 
       - name: Copy the env file into machine
         run: |
-          sshpass -p ${{ secrets.DEPLOYMENT_MACHINE_PASSWORD }} scp .env.dev ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@${{ secrets.DEPLOYMENT_MACHINE_HOST }}:~/basic_api_dev/
+          sshpass -p ${{ secrets.DEPLOYMENT_MACHINE_PASSWORD }} scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null .env.dev ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@${{ secrets.DEPLOYMENT_MACHINE_HOST }}:~/basic_api_dev/
 
 
       - name: SSH into the deployment machine and deploy
