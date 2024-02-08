@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "${{ secrets.DEPLOYMENT_MACHINE_PASSWORD }}" | \
           sshpass -e scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-          -r .env.dev ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@${{ secrets.DEPLOYMENT_MACHINE_HOST }}:~/
+          -r .env.dev ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@${{ secrets.DEPLOYMENT_MACHINE_HOST }}:~/root/basic_api_dev/.env
 
       - name: SSH into the deployment machine and deploy
         uses: appleboy/ssh-action@master
