@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  backend:
+    image: ${API_IMAGE_NAME}
+    env_file:
+      - dev.env
+    ports:
+      - "${BACKEND_PORT}:${CONTAINER_PORT}"
+    volumes:
+      - .:/app
+    command: python manage.py runserver 0.0.0.0:${CONTAINER_PORT}
