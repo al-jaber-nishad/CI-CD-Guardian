@@ -39,5 +39,4 @@ jobs:
           script: |
             cd /basic_api_dev/
             mv .env.dev .env
-            docker pull $DOCKER_IMAGE_NAME
-            docker run -d --name basic-api-dev -p 8000:8000 $DOCKER_IMAGE_NAME
+            docker-compose -f dev.yml up
