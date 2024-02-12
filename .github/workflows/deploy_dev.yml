@@ -39,6 +39,6 @@ jobs:
           script: |
             ls
             pwd
-            cd /basic_api_dev/
+            cd basic_api_dev/
             mv .env.dev .env
             docker-compose -f dev.yml up
