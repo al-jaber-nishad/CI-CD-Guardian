@@ -34,7 +34,7 @@ jobs:
       - name: Copy the previous sha into the machine
         run: |
           cat host.txt
-          scp prev_sha.txt ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@{{ secrets.DEPLOYMENT_MACHINE_HOST }}:~/basic_api_dev/
+          scp prev_sha.txt ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@103.163.246.202:~/basic_api_dev/
 
 
       - name: SSH into the deployment machine and deploy
