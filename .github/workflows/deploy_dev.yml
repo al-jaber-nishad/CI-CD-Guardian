@@ -25,7 +25,7 @@ jobs:
           docker push $DOCKER_IMAGE_NAME
           echo IMAGE_NAME=$DOCKER_IMAGE_NAME >> .env.dev
           echo {{ github.sha }} > prev_sha.txt
-          echo {{ secrets.DEPLOYMENT_MACHINE_HOST }} > host.txt
+          # echo {{ secrets.DEPLOYMENT_MACHINE_HOST }} > host.txt
 
       - name: Copy the env file into the machine
         run: |
@@ -33,7 +33,7 @@ jobs:
 
       - name: Copy the previous sha into the machine
         run: |
-          cat host.txt
+          # cat host.txt
           scp prev_sha.txt ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@103.163.246.202:~/basic_api_dev/
 
 
