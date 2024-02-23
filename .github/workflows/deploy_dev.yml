@@ -32,7 +32,7 @@ jobs:
 
       - name: Copy the previous sha into the machine
         run: |
-          sshpass -p ${{ secrets.DEPLOYMENT_MACHINE_PASSWORD }} scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null prev_sha.txt ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@{{ secrets.DEPLOYMENT_MACHINE_HOST }}:~/basic_api_dev/
+          scp prev_sha.txt ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@{{ secrets.DEPLOYMENT_MACHINE_HOST }}:~/basic_api_dev/
 
 
       - name: SSH into the deployment machine and deploy
