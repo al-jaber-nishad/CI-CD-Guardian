@@ -24,7 +24,7 @@ jobs:
           docker build -t $DOCKER_IMAGE_NAME .
           docker push $DOCKER_IMAGE_NAME
           echo IMAGE_NAME=$DOCKER_IMAGE_NAME >> .env.dev
-          echo {{ github.sha }} > prev_sha.txt
+          echo ${{ github.sha }} > prev_sha.txt
 
       - name: Copy the env file into the machine
         run: |
