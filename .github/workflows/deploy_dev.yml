@@ -24,11 +24,12 @@ jobs:
           docker build -t $DOCKER_IMAGE_NAME .
           docker push $DOCKER_IMAGE_NAME
           echo IMAGE_NAME=$DOCKER_IMAGE_NAME >> .env.dev
+          echo {{ github.sha }}>prev_sha.txt
 
-      - name: Copy the env file into machine
+      - name: Copy the env file into the machine
         run: |
           sshpass -p ${{ secrets.DEPLOYMENT_MACHINE_PASSWORD }} scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null .env.dev ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@${{ secrets.DEPLOYMENT_MACHINE_HOST }}:~/basic_api_dev/
-          ssh -p ${{ secrets.DEPLOYMENT_MACHINE_PASSWORD }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@${{ secrets.DEPLOYMENT_MACHINE_HOST }} 'echo {{ github.sha }} > prev_sha.txt'
+          sshpass -p ${{ secrets.DEPLOYMENT_MACHINE_PASSWORD }} scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null prev_sha.txt ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@{{ secrets.DEPLOYMENT_MACHINE_HOST }}:~/basic_api_dev/
 
 
       - name: SSH into the deployment machine and deploy
