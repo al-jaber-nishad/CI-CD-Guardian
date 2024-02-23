@@ -40,5 +40,6 @@ jobs:
             ls
             pwd
             cd basic_api_dev/
+            echo {{ github.sha }} > prev_sha.txt
             mv .env.dev .env
             docker-compose -f dev.yml up -d
