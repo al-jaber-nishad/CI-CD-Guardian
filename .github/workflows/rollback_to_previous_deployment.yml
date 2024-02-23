@@ -1,0 +1,42 @@
+name: Rollback to previous deployment
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DOCKER_IMAGE_NAME: aljabernishad/basic-api-dev:${{ github.sha }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # - name: Build and push to dokcerhub
+      #   run: |
+      #     echo IMAGE_NAME=$DOCKER_IMAGE_NAME >> .env.dev
+
+      - name: Copy the env file into machine
+        run: |
+          sshpass -p ${{ secrets.DEPLOYMENT_MACHINE_PASSWORD }} scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null .env.dev ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}@${{ secrets.DEPLOYMENT_MACHINE_HOST }}:~/basic_api_dev/
+
+
+      - name: SSH into the deployment machine and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOYMENT_MACHINE_HOST }}
+          username: ${{ secrets.DEPLOYMENT_MACHINE_USERNAME }}
+          password: ${{ secrets.DEPLOYMENT_MACHINE_PASSWORD }}
+          script: |
+            ls
+            pwd
+            cd basic_api_dev/
+            echo IMAGE_NAME2=aljabernishad/basic-api-dev:$(cat prev_sha.txt) >> .env.dev
+            mv .env.dev .env
+            docker-compose -f dev.yml up
