@@ -73,11 +73,11 @@ jobs:
     needs: merge
 
     steps:
-      if: failure()
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Send email on failure
+        if: failure()
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
