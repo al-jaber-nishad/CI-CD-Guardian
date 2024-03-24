@@ -11,9 +11,12 @@ mccabe==0.7.0
 packaging==23.2
 platformdirs==4.1.0
 pluggy==1.4.0
+psycopg2==2.9.1
+psycopg2-binary==2.9.9
 pylint==3.0.3
 pytest==8.0.0
 pytest-django==4.7.0
+python-dotenv==1.0.0
 pytz==2023.3.post1
 sqlparse==0.4.4
 tomli==2.0.1
