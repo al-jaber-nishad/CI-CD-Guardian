@@ -1,7 +1,6 @@
-# pull official base image
-FROM python:3.11.4-slim-buster
+FROM python:3.9-slim
 
-# set environment variables
+# Set environment variables for Python
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
@@ -10,26 +9,16 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         build-essential \
         libpq-dev \
+        python3-dev \
     && rm -rf /var/lib/apt/lists/*
-    
-# set work directory
-WORKDIR /usr/src/app
 
+# Set the working directory in the container
+WORKDIR /app
 
-RUN 
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
 
-# install dependencies
-RUN pip install --upgrade pip
-COPY ./requirements.txt .
-RUN pip install -r requirements.txt
-
-# copy project
-COPY . .
-
-# Migrate and load seed data
-# RUN python3 manage.py makemigrations
-# RUN python3 manage.py migrate
-# RUN python3 manage.py loaddata seed_data.json
+COPY . /app/
 
 # Expose and run the server
 EXPOSE 8000
